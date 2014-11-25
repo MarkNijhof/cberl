@@ -26,13 +26,13 @@ encode_value1(_, Value) ->
     Value.
 
 -spec decode_value(integer(), value()) -> value().
-decode_value(Flag, Value) when ?'CBE_RAW' band Flag == ?'CBE_RAW' -> 
+decode_value(Flag, Value) when ?'CBE_RAW' band Flag == ?'CBE_RAW' ->
     decode_value(Flag bxor ?'CBE_RAW', binary_to_term(Value));
-decode_value(Flag, Value) when ?'CBE_JSON' band Flag == ?'CBE_JSON' -> 
-    decode_value(Flag bxor ?'CBE_JSON', jiffy:decode(Value));                
-decode_value(Flag, Value) when ?'CBE_STR' band Flag == ?'CBE_STR' -> 
+decode_value(Flag, Value) when ?'CBE_JSON' band Flag == ?'CBE_JSON' ->
+    decode_value(Flag bxor ?'CBE_JSON', jiffy:decode(Value, [return_maps]));
+decode_value(Flag, Value) when ?'CBE_STR' band Flag == ?'CBE_STR' ->
     decode_value(Flag bxor ?'CBE_STR', binary_to_list(Value));
-decode_value(_, Value) -> 
+decode_value(_, Value) ->
     Value.
 
 -spec flag(encoder() | encoder_list()) -> integer().
